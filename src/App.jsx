@@ -23,7 +23,11 @@ function App() {
         ))
     }
 
-    
+    const updateTodo = (id, todo)=>{
+        setTodos((prev)=> prev.map((prevtodos)=>{
+            prevtodos.id === id ? todo: prevtodos
+        }))
+    }
 
 
     useEffect(()=>{
