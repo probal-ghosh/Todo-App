@@ -9,12 +9,12 @@ import { TodoProvider } from './context/TodoContext'
 // setTimeout(console.log(Todos), 2000)
 
 function App() {
-    const [Todos, setTodos] = useState([])
+    const [todos, setTodos] = useState([])
 
-    const addTodo = (Todo)=>{
-        console.log(Todo)
-        setTodos((prev)=>[{id: Date.now(), ...Todo}, ...prev])
-        console.log(Todos)
+    const addTodo = (todo)=>{
+        // console.log(Todo)
+        setTodos((prev)=>[{id: Date.now(), ...todo}, ...prev])
+        // console.log(Todos)
     }
     
     const toggleTodo = (id)=>{
@@ -24,27 +24,31 @@ function App() {
     }
 
     const updateTodo = (id, todo)=>{
-        setTodos((prev)=> prev.map((prevtodos)=>{
+        setTodos((prev)=> prev.map((prevtodos)=>
             prevtodos.id === id ? todo: prevtodos
-        }))
+        ))
+    }
+
+    const deleteTodo = (id)=>{
+        setTodos((prev)=> prev.filter((todo)=> todo.id !== id))
     }
 
 
     useEffect(()=>{
-    const Todos =JSON.parse(localStorage.getItem('todos'))
-    if(Todos && Todos.length > 0){
-        setTodos(Todos)
+    const todos =JSON.parse(localStorage.getItem('todos'))
+    if(todos && todos.length > 0){
+        setTodos(todos)
     }
     }, [])
 
     useEffect(()=>{
-    localStorage.setItem('todos', JSON.stringify(Todos))
-    },[Todos])
+    localStorage.setItem('todos', JSON.stringify(todos))
+    },[todos])
 
     // localStorage.clear()
 
     return (
-        <TodoProvider value={{Todos, addTodo, toggleTodo, updateTodo}}>
+        <TodoProvider value={{todos, addTodo, toggleTodo, updateTodo, deleteTodo}}>
     <div className="bg-[#172842] min-h-screen py-8">
                 <div className="w-full max-w-2xl mx-auto shadow-md rounded-lg px-4 py-3 text-white">
                     <h1 className="text-2xl font-bold text-center mb-8 mt-2">Manage Your Todos</h1>
@@ -52,12 +56,13 @@ function App() {
                         <TodoForm/>
                     </div>
                     <div className="flex flex-wrap gap-y-3">
-                        {/* <TodoItem/> */}
-                        {Todos.map((todo)=>{
-                            <div key={todo.id}>
-                                <TodoItem todo={todo}/>
+                        {todos.map((todo)=>(
+                            <div key={todo.id}
+                            className='w-full'>
+                                {/* {console.log(todo)} */}
+                                <TodoItem todos={todo}/>
                             </div>
-                        })}
+                        ))}
                     </div>
                 </div>
             </div>
