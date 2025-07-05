@@ -4,7 +4,7 @@ import { useTodo } from "../context/TodoContext";
 
 
 function TodoForm() {
-    const [Todo, setTodo ] = useState([])
+    const [Todo, setTodo ] = useState("")
 
     const {addTodo} = useTodo()
     
@@ -15,7 +15,7 @@ function TodoForm() {
     const Add = (e)=>{
         e.preventDefault()
         if(!Todo) return
-
+        console.log(`form submitted ${Todo}`)
         addTodo({Todo, completed: false})
         setTodo('')
 
